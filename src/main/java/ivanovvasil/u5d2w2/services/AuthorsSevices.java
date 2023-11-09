@@ -1,5 +1,7 @@
 package ivanovvasil.u5d2w2.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import ivanovvasil.u5d2w2.entities.Author;
 import ivanovvasil.u5d2w2.exceptions.BadRequestException;
 import ivanovvasil.u5d2w2.exceptions.NotFoundException;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +22,8 @@ import java.util.List;
 public class AuthorsSevices {
   @Autowired
   private AuthorsRepository authorsRepository;
+  @Autowired
+  private Cloudinary cloudinary;
 
   public Author saveRunnerUser(Author author) {
     return authorsRepository.save(author);
@@ -62,5 +67,12 @@ public class AuthorsSevices {
     found.setEmail(body.getEmail());
     found.setBirthDate(body.getBirthDate());
     return authorsRepository.save(found);
+  }
+
+  public Author uploadImg(int id, MultipartFile file) throws IOException {
+    Author found = this.findById(id);
+    String urlImg = (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+    found.setAvatar(urlImg);
+    return found;
   }
 }

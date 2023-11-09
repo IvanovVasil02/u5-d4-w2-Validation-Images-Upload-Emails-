@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -31,8 +32,12 @@ public class AuthorsController {
         throw new RuntimeException(e);
       }
     }
+  }
 
-
+  @PostMapping("/{id}/uploadAvatarImg")
+  public Author uploadAvatarImg(@PathVariable int id,
+                                @RequestParam("avatar") MultipartFile body) throws IOException {
+    return authorSevice.uploadImg(id, body);
   }
 
   @GetMapping("")
