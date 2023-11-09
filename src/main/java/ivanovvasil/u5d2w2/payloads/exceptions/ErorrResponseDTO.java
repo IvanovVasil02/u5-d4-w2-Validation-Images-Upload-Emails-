@@ -1,4 +1,4 @@
-package ivanovvasil.u5d2w2.exceptions;
+package ivanovvasil.u5d2w2.payloads.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Setter
 @Getter
-public class ErorrsPayload {
+public class ErorrResponseDTO {
   private String message;
   private Date timestamp;
 }

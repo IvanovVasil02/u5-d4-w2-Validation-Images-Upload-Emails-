@@ -3,6 +3,7 @@ package ivanovvasil.u5d2w2.services;
 import ivanovvasil.u5d2w2.entities.Author;
 import ivanovvasil.u5d2w2.exceptions.BadRequestException;
 import ivanovvasil.u5d2w2.exceptions.NotFoundException;
+import ivanovvasil.u5d2w2.payloads.users.NewAuthorDTO;
 import ivanovvasil.u5d2w2.repositories.AuthorsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -18,12 +20,18 @@ public class AuthorsSevices {
   @Autowired
   private AuthorsRepository authorsRepository;
 
-  public Author save(Author body) {
-    authorsRepository.findByEmail(body.getEmail()).ifPresent(author -> {
+  public Author save(NewAuthorDTO body) throws IOException {
+    authorsRepository.findByEmail(body.email()).ifPresent(author -> {
       throw new BadRequestException("L'email " + author.getEmail() + " è già utilizzata!");
     });
-    body.setAvatar("http://ui-avatars.com/api/?name=" + body.getName() + "+" + body.getSurname());
-    return authorsRepository.save(body);
+
+    Author newAuthor = new Author();
+    newAuthor.setName(body.name());
+    newAuthor.setSurname(body.surname());
+    newAuthor.setEmail(body.email());
+    newAuthor.setBirthDate(body.birthDate());
+    newAuthor.setAvatar("http://ui-avatars.com/api/?name=" + newAuthor.getName() + "+" + newAuthor.getSurname());
+    return authorsRepository.save(newAuthor);
   }
 
   public Page<Author> findAll(int page, int size, String orderBy) {
@@ -49,6 +57,6 @@ public class AuthorsSevices {
     found.setSurname(body.getSurname());
     found.setEmail(body.getEmail());
     found.setBirthDate(body.getBirthDate());
-    return this.save(found);
+    return authorsRepository.save(found);
   }
 }

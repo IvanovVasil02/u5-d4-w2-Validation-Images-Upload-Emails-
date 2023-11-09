@@ -1,11 +1,17 @@
 package ivanovvasil.u5d2w2.controllers;
 
 import ivanovvasil.u5d2w2.entities.Author;
+import ivanovvasil.u5d2w2.exceptions.BadRequestException;
+import ivanovvasil.u5d2w2.payloads.users.NewAuthorDTO;
 import ivanovvasil.u5d2w2.services.AuthorsSevices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/authors")
@@ -13,17 +19,27 @@ public class AuthorsController {
   @Autowired
   private AuthorsSevices authorSevice;
 
+  @PostMapping("")
+  @ResponseStatus(HttpStatus.CREATED)
+  public Author saveAuthor(@RequestBody @Validated NewAuthorDTO body, BindingResult validation) {
+    if (validation.hasErrors()) {
+      throw new BadRequestException(validation.getAllErrors());
+    } else {
+      try {
+        return authorSevice.save(body);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+
+  }
+
   @GetMapping("")
   public Page<Author> getAll(@RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "15") int size,
                              @RequestParam(defaultValue = "name") String orderBy) {
     return authorSevice.findAll(page, size, orderBy);
-  }
-
-  @PostMapping("")
-  @ResponseStatus(HttpStatus.CREATED)
-  public Author saveAuthor(@RequestBody Author body) {
-    return authorSevice.save(body);
   }
 
   @GetMapping("/{id}")
