@@ -1,4 +1,4 @@
-package ivanovvasil.u5d2w2.payloads.users;
+package ivanovvasil.u5d2w2.payloads.authors;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

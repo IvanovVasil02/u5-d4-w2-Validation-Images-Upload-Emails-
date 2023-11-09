@@ -2,7 +2,7 @@ package ivanovvasil.u5d2w2.controllers;
 
 import ivanovvasil.u5d2w2.entities.Author;
 import ivanovvasil.u5d2w2.exceptions.BadRequestException;
-import ivanovvasil.u5d2w2.payloads.users.NewAuthorDTO;
+import ivanovvasil.u5d2w2.payloads.authors.NewAuthorDTO;
 import ivanovvasil.u5d2w2.services.AuthorsSevices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ public class AuthorsController {
   @ResponseStatus(HttpStatus.CREATED)
   public Author saveAuthor(@RequestBody @Validated NewAuthorDTO body, BindingResult validation) {
     if (validation.hasErrors()) {
-      throw new BadRequestException(validation.getAllErrors());
+      throw new BadRequestException("Empty or not respected fields", validation.getAllErrors());
     } else {
       try {
         return authorSevice.save(body);

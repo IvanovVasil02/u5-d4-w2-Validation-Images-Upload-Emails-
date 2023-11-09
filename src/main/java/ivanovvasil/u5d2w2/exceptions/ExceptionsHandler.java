@@ -2,6 +2,7 @@ package ivanovvasil.u5d2w2.exceptions;
 
 import ivanovvasil.u5d2w2.payloads.exceptions.ErorrResponseDTO;
 import ivanovvasil.u5d2w2.payloads.exceptions.ErrorsListResponseDTO;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,7 +18,7 @@ public class ExceptionsHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ErrorsListResponseDTO handleBadRequest(BadRequestException e) {
     if (e.getErrorList() != null) {
-      List<String> errorsList = e.getErrorList().stream().map(error -> error.getDefaultMessage()).toList();
+      List<String> errorsList = e.getErrorList().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
       return new ErrorsListResponseDTO(e.getMessage(), new Date(), errorsList);
     } else {
       return new ErrorsListResponseDTO(e.getMessage(), new Date(), new ArrayList<>());

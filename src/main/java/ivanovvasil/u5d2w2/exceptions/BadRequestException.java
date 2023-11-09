@@ -13,7 +13,8 @@ public class BadRequestException extends RuntimeException {
     super(message);
   }
 
-  public BadRequestException(List<ObjectError> errorList) {
+  public BadRequestException(String message, List<ObjectError> errorList) {
+    super(message);
     this.errorList = errorList;
   }
 }

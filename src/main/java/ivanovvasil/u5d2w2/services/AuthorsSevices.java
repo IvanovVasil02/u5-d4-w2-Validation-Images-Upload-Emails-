@@ -3,7 +3,7 @@ package ivanovvasil.u5d2w2.services;
 import ivanovvasil.u5d2w2.entities.Author;
 import ivanovvasil.u5d2w2.exceptions.BadRequestException;
 import ivanovvasil.u5d2w2.exceptions.NotFoundException;
-import ivanovvasil.u5d2w2.payloads.users.NewAuthorDTO;
+import ivanovvasil.u5d2w2.payloads.authors.NewAuthorDTO;
 import ivanovvasil.u5d2w2.repositories.AuthorsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +19,10 @@ import java.util.List;
 public class AuthorsSevices {
   @Autowired
   private AuthorsRepository authorsRepository;
+
+  public Author saveRunnerUser(Author author) {
+    return authorsRepository.save(author);
+  }
 
   public Author save(NewAuthorDTO body) throws IOException {
     authorsRepository.findByEmail(body.email()).ifPresent(author -> {

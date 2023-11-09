@@ -23,7 +23,7 @@ public class BlogPostsController {
   @ResponseStatus(HttpStatus.CREATED)
   public BlogPost saveBlogPost(@RequestBody @Validated NewBlogPostDTO body, BindingResult validation) {
     if (validation.hasErrors()) {
-      throw new BadRequestException(validation.getAllErrors());
+      throw new BadRequestException("Empty or not respected fields", validation.getAllErrors());
     } else {
       try {
         return blogPostsSevices.saveNewPost(body);

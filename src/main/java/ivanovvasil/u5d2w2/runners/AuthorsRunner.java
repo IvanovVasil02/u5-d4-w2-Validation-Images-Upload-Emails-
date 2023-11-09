@@ -18,7 +18,7 @@ public class AuthorsRunner implements CommandLineRunner {
 
     for (int i = 0; i < 10; i++) {
       Author newAuthor = Author.builder().build();
-      authorsSevices.save(newAuthor);
+      authorsSevices.saveRunnerUser(newAuthor);
     }
 
   }
