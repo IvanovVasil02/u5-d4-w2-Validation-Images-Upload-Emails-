@@ -13,6 +13,8 @@ public record NewBlogPostDTO(
         String titolo,
         @NotEmpty(message = "The post content is a required field")
         @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "The email entered is invalid")
-        String postContent
+        String postContent,
+        @NotEmpty(message = "The id is a required field")
+        int AuthorID
 ) {
 }
