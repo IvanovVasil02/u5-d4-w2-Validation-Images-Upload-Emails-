@@ -15,7 +15,6 @@ public class AuthorsRunner implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-
     for (int i = 0; i < 10; i++) {
       Author newAuthor = Author.builder().build();
       authorsSevices.saveRunnerUser(newAuthor);
